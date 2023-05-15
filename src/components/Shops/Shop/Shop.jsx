@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import './Shop.css'
 import Product from '../../product/Product/Product';
 import Cart from '../../Cart/Cart';
-import { addToDb } from '../../../../ema-john-resources-main/utilities/fakedb';
+import { addToDb, getShoppingCart,} from '../../../../ema-john-resources-main/utilities/fakedb';
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
@@ -14,6 +14,22 @@ const Shop = () => {
       .then(res => res.json())
       .then(data => setProducts(data))
   }, []);
+
+ useEffect( ()=>{
+  
+  const storedCart = getShoppingCart;
+  // console.log(storedCart);
+
+  for(const id in storedCart){
+    const saveProduct = products.find(product => product.id ===id)
+    console.log(saveProduct);
+
+  }
+ 
+ },[products])
+ 
+ 
+
 
   const handleAddToCart = (product) => {
     // cart.push(product);
