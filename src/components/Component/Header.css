@@ -8,6 +8,8 @@
   padding-left: 50px;
   padding-right: 50px;
   align-items: center;
+  position: sticky;
+  top: 0;
 }
 .angkor_tag{
   /* padding-top: 25px; */
