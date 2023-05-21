@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // import React from 'react';
 import { useEffect, useState } from 'react';
 import './Shop.css'
@@ -24,12 +25,29 @@ const Shop = () => {
     const saveProduct = products.find(product => product.id ===id)
     console.log(saveProduct);
 
+    const quantity =storedCart[id];
+    addedProduct.quantity=quantity
+    console.log(addedProduct);
+
   }
  
  },[products])
  
- 
-
+//  console.log(products)
+useEffect(()=>{
+  const storedCart =getShoppingCart();
+  const savedCart = [];
+  for(const id in storedCart){
+    const addedProduct = products.find(product => product.id ===id)
+    if(addedProduct){
+      const quantity = storedCart[id];
+      addedProduct.quantity=quantity;
+      savedCart.push(addedProduct);
+    }
+    //  console.log('added Product',addedProduct);
+  }
+  setCart(savedCart);
+}, [products])
 
   const handleAddToCart = (product) => {
     // cart.push(product);
