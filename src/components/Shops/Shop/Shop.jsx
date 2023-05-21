@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import './Shop.css'
 import Product from '../../product/Product/Product';
 import Cart from '../../Cart/Cart';
-import { addToDb, getShoppingCart,} from '../../../../ema-john-resources-main/utilities/fakedb';
+import { addToDb, getShoppingCart, } from '../../../../ema-john-resources-main/utilities/fakedb';
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
@@ -16,46 +16,59 @@ const Shop = () => {
       .then(data => setProducts(data))
   }, []);
 
- useEffect( ()=>{
-  
-  const storedCart = getShoppingCart;
-  // console.log(storedCart);
+  useEffect(() => {
 
-  for(const id in storedCart){
-    const saveProduct = products.find(product => product.id ===id)
-    console.log(saveProduct);
+    const storedCart = getShoppingCart;
+    // console.log(storedCart);
 
-    const quantity =storedCart[id];
-    addedProduct.quantity=quantity
-    console.log(addedProduct);
+    for (const id in storedCart) {
+      const saveProduct = products.find(product => product.id === id)
+      console.log(saveProduct);
 
-  }
- 
- },[products])
- 
-//  console.log(products)
-useEffect(()=>{
-  const storedCart =getShoppingCart();
-  const savedCart = [];
-  for(const id in storedCart){
-    const addedProduct = products.find(product => product.id ===id)
-    if(addedProduct){
       const quantity = storedCart[id];
-      addedProduct.quantity=quantity;
-      savedCart.push(addedProduct);
+      addedProduct.quantity = quantity
+      console.log(addedProduct);
+
     }
-    //  console.log('added Product',addedProduct);
-  }
-  setCart(savedCart);
-}, [products])
+
+  }, [products])
+
+  //  console.log(products)
+  useEffect(() => {
+    const storedCart = getShoppingCart();
+    const savedCart = [];
+    for (const id in storedCart) {
+      const addedProduct = products.find(product => product.id === id)
+      if (addedProduct) {
+        // -----add quantity---------
+        const quantity = storedCart[id];
+        addedProduct.quantity = quantity;
+        savedCart.push(addedProduct);
+      }
+      //  console.log('added Product',addedProduct);
+    }
+    setCart(savedCart);
+  }, [products])
 
   const handleAddToCart = (product) => {
-    // cart.push(product);
+    cart.push(product);
     // {amra ager a cart a add korte parbo na }
-
+    let newCart = [];
     //  {alada alada cart er jonno}
 
-    const newCart = [...cart, product];
+    newCart = [...cart, product];
+    const exists = cart.find(pd => pd.id === product.id);
+    if (!exists) {
+      product.quantity = 1;
+      newCart = [...Cart, product]
+    }
+    else {
+      exists.quantity = exists.quantity + 1;
+      const remaining = cart.filter(pd => pd.id !== product.id);
+      newCart = [...remaining, exists]
+    }
+
+
     setCart(newCart);
 
     addToDb(product.id)
